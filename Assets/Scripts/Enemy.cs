@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Enemy Stats")]
     [SerializeField] float health = 100;
-    [SerializeField] float shotCounter;
+    [SerializeField] int killPoints = 50;
+
+
+    [Header("Shooting")]
+    float shotCounter;
     [SerializeField] float minTimeBetweenShots = 0.2f;
     [SerializeField] float maxTimeBetweenShots = 3f;
     [SerializeField] float projectileSpeed = 3f;
     [SerializeField] GameObject projectile;
     [SerializeField] GameObject explosionParticles;
     [SerializeField] float explosionDuration = 1f;
+
+    [Header("Sound Effects")]
     [SerializeField] AudioClip deathSound;
     [SerializeField] [Range(0,1)] float deathSoundVolume = 0.75f;
     [SerializeField] AudioClip shootSound;
@@ -47,6 +54,7 @@ public class Enemy : MonoBehaviour
     private void Fire()
     {
         Player player = FindObjectOfType<Player>();
+        if (!player) { return; }
         GameObject laser = Instantiate(
                     projectile,
                     transform.position,
@@ -88,5 +96,6 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
         Destroy(explosion, explosionDuration);
         AudioSource.PlayClipAtPoint(deathSound, Camera.main.transform.position, deathSoundVolume);
+        FindObjectOfType<GameSession>().IncreaseScore(killPoints);
     }
 }

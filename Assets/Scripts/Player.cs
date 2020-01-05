@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -41,6 +42,11 @@ public class Player : MonoBehaviour
     {
         Move();
         Fire();
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
 
@@ -102,6 +108,7 @@ public class Player : MonoBehaviour
     {
         Destroy(gameObject);
         AudioSource.PlayClipAtPoint(deathSound, Camera.main.transform.position, deathSoundVolume);
+        FindObjectOfType<Level>().LoadGameOver();
     }
 
     private void Fire()
